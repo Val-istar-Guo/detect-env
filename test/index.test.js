@@ -31,3 +31,12 @@ test('return default value when no obj key equal process.env.NODE_ENV', () => {
     default: 'dev.miaooo.me',
   })).toBe('dev.miaooo.me');
 });
+
+test('do not throw error when set `default = undefined`', () => {
+  process.env.NODE_ENV = 'develop';
+
+  expect(detectEnv({
+    production: true,
+    default: undefined,
+  })).toBeUndefined();
+});

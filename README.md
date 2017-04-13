@@ -1,5 +1,8 @@
 # DETECT-ENV
 
+[![npm](https://img.shields.io/npm/v/detect-env.svg?style=flat-square)]()
+[![npm](https://img.shields.io/npm/dm/detect-env.svg?style=flat-square)]()
+
 # Install
 
 ```
