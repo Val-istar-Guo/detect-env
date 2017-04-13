@@ -1,6 +1,6 @@
 {
   "name": "detect-env",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "elegant detect process.env.NODE_ENV",
   "main": "dist/bundle.js",
   "jsnext:main": "src/index.js",
@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "prepublishOnly": "npm run build"
+    "prepublish": "npm run build"
   },
   "keywords": [
     "detect NODE_ENV",
