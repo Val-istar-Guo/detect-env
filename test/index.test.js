@@ -1,4 +1,6 @@
-import detectEnv from '../src';
+import detectEnv, { create } from '../src/jsnext';
+// const detectEnv = require('../dist/bundle');
+// const { create } = require('../dist/bundle');
 
 test('throw error when detectEnv param no default key', () => {
   expect(() => {
@@ -39,4 +41,57 @@ test('do not throw error when set `default = undefined`', () => {
     production: true,
     default: undefined,
   })).toBeUndefined();
+});
+
+test('alias is effective', () => {
+  const env = create()
+    .alias({
+      production: /pd/,
+    });
+
+  process.env.NODE_ENV = 'pd';
+
+  expect(env({
+    production: 'prod.miaooo.me',
+    default: 'default.miaooo.me',
+  })).toBe('prod.miaooo.me');
+});
+
+test('custom envVariable', () => {
+  const envVariable = 'prod';
+
+  const env = create()
+    .envVariable(() => envVariable);
+
+  expect(env.detect({
+    prod: 'prod.miaooo.me',
+    default: 'default.miaooo.me',
+  })).toBe('prod.miaooo.me');
+
+  expect(env.detect({
+    production: 'prod.miaooo.me',
+    default: 'default.miaooo.me',
+  })).toBe('default.miaooo.me');
+});
+
+test('shortcut test and custom shortcut', () => {
+  process.env.NODE_ENV = 'st';
+  let env = create();
+
+  expect(env.isStage).toBeTruthy();
+  expect(env.isProd).not.toBeTruthy();
+  expect(env.isLocal).not.toBeTruthy();
+  expect(env.isDev).not.toBeTruthy();
+  expect(env.isTest).not.toBeTruthy();
+
+
+  process.env.NODE_ENV = 't';
+  env = create()
+    .shortcut({
+      'Test': (envName) => envName === 't',
+    })
+
+  expect(env.isTest).toBeTruthy();
+  expect(env.isProd).toBeUndefined();
+
 });
