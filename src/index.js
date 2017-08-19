@@ -1,4 +1,7 @@
-export default function (policy) {
-  if (!('default' in policy)) throw new Error('detectEnv expect deault value');
-  return policy[process.env.NODE_ENV] || policy.default;
-}
+import create from './create';
+
+const defaultDetector = create();
+defaultDetector.create = create;
+
+export default defaultDetector;
+
