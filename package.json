@@ -1,6 +1,6 @@
 {
   "name": "detect-env",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "elegant detect process.env.NODE_ENV",
   "main": "dist/bundle.js",
   "jsnext:main": "src/jsnext.js",
@@ -21,6 +21,7 @@
   ],
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "eslint": "^4.5.0",
@@ -29,7 +30,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.2.1",
     "jest": "^20.0.4",
-    "rollup": "^0.47.6"
+    "rollup": "^0.47.6",
+    "rollup-plugin-babel": "^3.0.2"
   },
   "dependencies": {}
 }
