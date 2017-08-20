@@ -12,6 +12,8 @@
 
 ### 版本迭代说明
 
+* v 2.0.2
+  * [#] use babel-es2015 to transform all es6 grammar bacause UglifyJs don't support es6！
 * v 2.0.1
   * [#] use arrow functions transform, because UglifyJs don't support arrow function
 * v 2.0.0
