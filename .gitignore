@@ -7,3 +7,7 @@ yarn-error.log
 
 # Complie
 dist/
+
+# Editor
+*.swp
+
