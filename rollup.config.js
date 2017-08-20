@@ -8,7 +8,11 @@ export default {
   plugins: [
     babel({
       babelrc: false,
-      "plugins": [ "transform-es2015-arrow-functions" ],
+      presets: [
+        ["es2015", { "modules": false }]
+      ],
+      plugins: ["transform-object-rest-spread"],
+
       exclude: 'node_modules/**',
     }),
   ],
