@@ -12,6 +12,8 @@
 
 ### 版本迭代说明
 
+* v 2.0.1
+  * [#] use arrow functions transform, because UglifyJs don't support arrow function
 * v 2.0.0
   * [+] create an `env`(detector) use your own config
   * [+] support alias
