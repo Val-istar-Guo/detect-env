@@ -1,6 +1,6 @@
 {
   "name": "detect-env",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "elegant detect process.env.NODE_ENV",
   "main": "dist/bundle.js",
   "jsnext:main": "src/jsnext.js",
