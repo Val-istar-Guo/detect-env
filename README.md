@@ -1,7 +1,7 @@
 # DETECT-ENV
 
-[![npm](https://img.shields.io/npm/v/detect-env.svg?style=flat-square)]()
-[![npm](https://img.shields.io/npm/dm/detect-env.svg?style=flat-square)]()
+[![npm](https://img.shields.io/npm/v/detect-env.svg?style=flat-square)](https://www.npmjs.com/package/detect-env)
+[![npm](https://img.shields.io/npm/dm/detect-env.svg?style=flat-square)](https://www.npmjs.com/package/detect-env)
 
 ## Install
 
@@ -21,10 +21,13 @@ yarn add detect-env
 import env from 'detect-env';
 
 const NEXT_PAGE_URL = env({
+  // if you want to set NET_PAGE_URL = 'prod.example.com'
+  // process.env.NODE_ENV can be 'prod' or 'production' according to alias setting
+  // but key's name mast be 'prod' according to alias setting
+  // if you want to change it, set alias to what you want
+  // for better performance, the neat code, the key name must be static
+  // rather than automatically correct according to the alias
   prod: 'prod.example.com',
-  // by default, production is an alias of prod
-  // so it is equal
-  // production: 'prod.example.com',
   test: 'test.example.com',
   default: 'dev.example.com',
 });
@@ -92,6 +95,7 @@ export default create()
     dev: /^develop(ment)?$/,
     stage: /^st$/,
     local: (envName) => envName === undefined || envName === null || /(locale)|(^$)/.test(envName),
+    your_key: your_regexp_or_function,
   })
   .shortcut({
     // The return value of the function will be used to set env.isProd
