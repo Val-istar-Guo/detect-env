@@ -9,7 +9,9 @@ export default {
     babel({
       babelrc: false,
       presets: [
-        ["es2015", { "modules": false }]
+        ["env", {
+          modules: false
+        }],
       ],
       plugins: ["transform-object-rest-spread"],
 
