@@ -1,97 +1,109 @@
-import detectEnv, { create } from '../src/jsnext';
-// const detectEnv = require('../dist/bundle');
-// const { create } = require('../dist/bundle');
+import { expect } from 'chai';
+import env from '../src/jsnext';
 
-test('throw error when detectEnv param no default key', () => {
-  expect(() => {
-    detectEnv({
-      production: {
-        host: 'miaooo.me',
-      },
-      develop: {
-        host: 'test.miaooo.me',
-      },
-    });
-  }).toThrow();
-});
 
-test('return value that key equal process.env.NODE_ENV', () => {
-  process.env.NODE_ENV = 'test';
+describe('Default env detector', function () {
 
-  expect(detectEnv({
-    production: 'miaooo.me',
-    test: 'test.miaooo.me',
-    default: 'dev.miaooo.me',
-  })).toBe('test.miaooo.me');
-});
+  context('Alias', function() {
 
-test('return default value when no obj key equal process.env.NODE_ENV', () => {
-  process.env.NODE_ENV = 'develop';
+    const easyRead = (variable) => {
+      if (variable === undefined) return 'undefined';
+      else if (variable === null) return null;
+      else if (variable === '') return 'empty string';
+      else return variable;
+    }
 
-  expect(detectEnv({
-    production: 'miaooo.me',
-    default: 'dev.miaooo.me',
-  })).toBe('dev.miaooo.me');
-});
-
-test('do not throw error when set `default = undefined`', () => {
-  process.env.NODE_ENV = 'develop';
-
-  expect(detectEnv({
-    production: true,
-    default: undefined,
-  })).toBeUndefined();
-});
-
-test('alias is effective', () => {
-  const env = create()
-    .alias({
-      production: /pd/,
+    const prodAlias = ['prod', 'production'];
+    prodAlias.forEach(function (envName) {
+      process.env.NODE_ENV = envName;
+      it(`should judge as prod env when process.env.NODE_ENV equal ${easyRead(envName)}`, function () {
+        expect(env.detect({
+          prod: 'prod.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('prod.miaooo.me');
+        expect(env({
+          prod: 'prod.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('prod.miaooo.me');
+      });
     });
 
-  process.env.NODE_ENV = 'pd';
+    const devAlias = ['dev', 'develop', 'development'];
+    devAlias.forEach(function (envName) {
+      it(`should judge as dev env when process.env.NODE_ENV equal '${easyRead(envName)}'`, function () {
+        process.env.NODE_ENV = envName;
 
-  expect(env({
-    production: 'prod.miaooo.me',
-    default: 'default.miaooo.me',
-  })).toBe('prod.miaooo.me');
-});
+        expect(env.detect({
+          dev: 'dev.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('dev.miaooo.me');
+        expect(env({
+          dev: 'dev.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('dev.miaooo.me');
+      });
+    });
 
-test('custom envVariable', () => {
-  const envVariable = 'prod';
+    const stageAlias = ['stage', 'st'];
+    stageAlias.forEach(function (envName) {
+      it(`should judge as stage env when process.env.NODE_ENV equal '${easyRead(envName)}'`, function () {
+        process.env.NODE_ENV = envName;
 
-  const env = create()
-    .envVariable(() => envVariable);
-
-  expect(env.detect({
-    prod: 'prod.miaooo.me',
-    default: 'default.miaooo.me',
-  })).toBe('prod.miaooo.me');
-
-  expect(env.detect({
-    production: 'prod.miaooo.me',
-    default: 'default.miaooo.me',
-  })).toBe('default.miaooo.me');
-});
-
-test('shortcut test and custom shortcut', () => {
-  process.env.NODE_ENV = 'st';
-  let env = create();
-
-  expect(env.isStage).toBeTruthy();
-  expect(env.isProd).not.toBeTruthy();
-  expect(env.isLocal).not.toBeTruthy();
-  expect(env.isDev).not.toBeTruthy();
-  expect(env.isTest).not.toBeTruthy();
+        expect(env.detect({
+          stage: 'stage.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('stage.miaooo.me');
+        expect(env({
+          stage: 'stage.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('stage.miaooo.me');
+      });
+    });
 
 
-  process.env.NODE_ENV = 't';
-  env = create()
-    .shortcut({
-      'Test': (envName) => envName === 't',
-    })
+    it("should judge as test env when process.env.NODE_ENV equal 'test'", function () {
+        process.env.NODE_ENV = 'test';
 
-  expect(env.isTest).toBeTruthy();
-  expect(env.isProd).toBeUndefined();
+        expect(env.detect({
+          test: 'test.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('test.miaooo.me');
+        expect(env({
+          test: 'test.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('test.miaooo.me');
+    });
+
+    const localAlias = [undefined, null, 'local', ''];
+    localAlias.forEach(function (envName) {
+      it.skip(`should judge as local env when process.env.NODE_ENV equal ${easyRead(envName)}`, function () {
+        process.env.NODE_ENV = envName;
+
+        expect(env.detect({
+          local: 'local.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('local.miaooo.me');
+        expect(env({
+          local: 'local.miaooo.me',
+          default: 'default.miaooo.me',
+        })).to.equal('local.miaooo.me');
+      });
+    });
+  });
+
+  // context('Detect Function', function () {
+  //   it('should throw error when param no default key')
+  //   it('should return value that is specified for the current environment')
+  //   it('should returns the default value when no value is specified for the current environment')
+  //   it('should not throw err when default key is set to undefined, null, 0 or empty string')
+  // });
+
+  // context('Shortcut in the prod enviroment', function() {
+  //   it ('isProd should be true')
+  //   it ('isDev should be true')
+  //   it ('isStage should be true')
+  //   it ('isTest should be true')
+  //   it ('isLocal should be true')
+  // });
 
 });

@@ -9,8 +9,8 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "test": "jest",
-    "prepublish": "npm run build"
+    "test": "mocha --compilers js:babel-core/register",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "detect NODE_ENV",
@@ -22,14 +22,10 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "eslint": "^4.5.0",
-    "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.2.1",
-    "jest": "^20.0.4",
-    "rollup": "^0.47.6",
+    "babel-preset-env": "^1.6.0",
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2"
   },
   "dependencies": {}

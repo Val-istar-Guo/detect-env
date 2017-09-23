@@ -11,3 +11,5 @@ dist/
 # Editor
 *.swp
 
+# Lock File
+package-lock.json
