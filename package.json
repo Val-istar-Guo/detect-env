@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rollup -c",
     "test": "mocha --compilers js:babel-core/register",
-    "prepublishOnly": "npm test; npm run build"
+    "prepublishOnly": "npm test; npm run build",
+    "precommit": "npm test"
   },
   "keywords": [
     "detect NODE_ENV",
@@ -24,6 +25,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
+    "husky": "^0.14.3",
     "mocha": "^3.5.3",
     "rollup": "^0.50.0",
     "rollup-plugin-babel": "^3.0.2"
