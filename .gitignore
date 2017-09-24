@@ -13,3 +13,4 @@ dist/
 
 # Lock File
 package-lock.json
+yarn.lock
