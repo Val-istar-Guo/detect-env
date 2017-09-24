@@ -1,7 +1,7 @@
 import create from './create';
+import detector from './detector';
 
-const defaultDetector = create();
-defaultDetector.create = create;
 
-export default defaultDetector;
+detector.create = create;
 
+export default detector;

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "rollup -c",
     "test": "mocha --compilers js:babel-core/register",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm test; npm run build"
   },
   "keywords": [
     "detect NODE_ENV",

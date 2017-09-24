@@ -1,95 +1,70 @@
+import normalize from './normalize';
+import { bindShortcut, updateShortcut, clearShortcut } from './shortcut';
+
+
 export default () => {
-  let alias = {
-    prod: /^production$/,
-    dev: /^develop(ment)?$/,
-    stage: /^st$/,
-    local: (envName) => envName === undefined || envName === null || /(locale)|(^$)/.test(envName),
-  };
+  let alias = {};
+  let shortcut = {};
+  let originalEnv = null;
 
-  let shortcut = {
-    'Prod': (envName) => envName === 'prod',
-    'Stage': (envName) => envName === 'stage',
-    'Dev': (envName) => envName === 'dev',
-    'Test': (envName) => envName === 'test',
-    'Local': (envName) => envName === 'loacal',
-  };
-
-  let getEnvVariable = () => process.env.NODE_ENV;
-
-  function matchAlias(value) {
-    for (let name in alias) {
-      if (typeof alias[name] === 'function' && alias[name](value)) return name;
-      if (alias[name] instanceof RegExp && alias[name].test(value)) return name;
-    }
-
-    return value;
-  }
 
   function detector(policy) {
     return detector.detect(policy);
   }
 
-  function clearShortcut() {
-    for (let name in shortcut) {
-      delete detector[`is${name}`];
-    }
-  }
-  function updateShortcut() {
-    const envVariable = getEnvVariable();
-    const envName = matchAlias(envVariable);
-
-    for (let name in shortcut) {
-      detector[`is${name}`] = shortcut[name](envName);
-    }
-  }
+  detector.value = null;
 
   detector.detect = function detect(policy) {
-    if (!('default' in policy)) throw new Error('detectEnv expect deault value');
+    if (!('default' in policy)) throw new TypeError('[detect-env detect()] expect deault value');
 
-    const envVariable = getEnvVariable();
-    const name = matchAlias(envVariable);
-
+    const name = detector.value;
     return policy[name] || policy.default;
   }
 
 
-  detector.alias = function(map) {
-    for (let name in map) {
-      if (!(map[name] instanceof RegExp || typeof map[name] !== 'function'))
-        throw new TypeError('[DetectEnv alias]: each alias.xxx should be an RegExp or Function');
+  detector.alias = function(table) {
+    for (let name in table) {
+      if (!(table[name] instanceof RegExp || typeof table[name] === 'function')) {
+        const message = `[detect-env alias()]: each alias.xxx should be an RegExp or Function, but get ${typeof table[name]}`;
+        throw new TypeError(message);
+      }
     }
+    alias = table;
 
-    alias = map;
+    detector.value = normalize(originalEnv, alias);
+    updateShortcut(detector, shortcut, detector.value);
 
-    updateShortcut();
     return detector;
   }
 
-  detector.shortcut = function (map) {
-    for (let name in map) {
-      if (typeof map[name] !== 'function')
-        throw new TypeError('[detect-env shortcut]: each shortcut.xxx should be an Function');
+  detector.shortcut = function (newShortcut) {
+    for (let name in newShortcut) {
+      if (typeof newShortcut[name] !== 'function') {
+        const message = `[detect-env shortcut()]: each shortcut.xxx should be an Function, but get ${typeof newShortcut[name]}`;
+        throw new TypeError(message);
+      }
     }
 
-    clearShortcut();
-    shortcut = map;
+    const oldShortcut = shortcut;
 
-    updateShortcut();
+    clearShortcut(detector, oldShortcut);
+    shortcut = newShortcut;
+    bindShortcut(detector, newShortcut, detector.value);
+
     return detector;
   }
 
   detector.envVariable = function (variable) {
-    if (typeof variable === 'function') {
-      getEnvVariable = variable;
-    } else {
-      getEnvVariable = () => variable;
+    if (variable !== null && typeof variable === 'object' || typeof variable === 'function') {
+      throw new TypeError(`[detect-env envVariable()] param should not be ${typeof variable}`);
     }
 
-    updateShortcut();
+    originalEnv = variable;
+    detector.value = normalize(variable, alias);
+    updateShortcut(detector, shortcut, detector.value);
+
     return detector;
   }
 
-  updateShortcut();
   return detector;
 }
-

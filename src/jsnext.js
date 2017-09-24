@@ -1,6 +1,9 @@
 import create from './create';
+import detector from './detector';
 
 
-const defaultDetector = create();
-export { create, defaultDetector as default };
+export {
+  detector as default,
+  create,
+};
 
