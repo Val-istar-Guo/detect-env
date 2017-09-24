@@ -48,7 +48,6 @@ describe('env creator', function () {
       })
       .envVariable('idiot');
 
-    console.log(env);
     expect(env.isFool).to.be.true;
     expect(env.isIdiot).to.be.true;
     expect(env.isGenius).to.be.false;
