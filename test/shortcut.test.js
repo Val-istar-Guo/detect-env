@@ -29,7 +29,6 @@ describe('Module shortcut:', function () {
       expect(obj.isDev).to.be.false;
       expect(obj.isTest).to.be.false;
       expect(obj.isLocal).to.be.false;
-      expect(false).to.be.true;
     });
   });
 });
