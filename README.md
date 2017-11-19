@@ -9,10 +9,6 @@
 npm install detect-env
 ```
 
-```
-yarn add detect-env
-```
-
 ## Usage
 
 ### Use default config
