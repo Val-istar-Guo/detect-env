@@ -1,20 +1,19 @@
 import normalize from './normalize';
-import { bindShortcut, updateShortcut, clearShortcut } from './shortcut';
+// import { bindShortcut, ufunctionpdateShortcut, clearShortcut } from './shortcut';
+import createShortcut from './createShortcut';
 
 
 export default () => {
   let alias = {};
-  let shortcut = {};
+  let shortcutHandles = {};
   let originalEnv = null;
 
 
-  function detector(policy) {
-    return detector.detect(policy);
-  }
-
+  const detector = policy => detector.detect(policy);
   detector.value = null;
 
-  detector.detect = function detect(policy) {
+
+  detector.detect = policy => {
     if (!('default' in policy)) throw new TypeError('[detect-env detect()] expect deault value');
 
     const name = detector.value;
@@ -22,7 +21,7 @@ export default () => {
   }
 
 
-  detector.alias = function(table) {
+  detector.alias = table => {
     for (let name in table) {
       if (!(table[name] instanceof RegExp || typeof table[name] === 'function')) {
         const message = `[detect-env alias()]: each alias.xxx should be an RegExp or Function, but get ${typeof table[name]}`;
@@ -32,25 +31,21 @@ export default () => {
     alias = table;
 
     detector.value = normalize(originalEnv, alias);
-    updateShortcut(detector, shortcut, detector.value);
+    detector.is = createShortcut(shortcutHandles, detector.value);
 
     return detector;
   }
 
-  detector.shortcut = function (newShortcut) {
-    for (let name in newShortcut) {
-      if (typeof newShortcut[name] !== 'function') {
-        const message = `[detect-env shortcut()]: each shortcut.xxx should be an Function, but get ${typeof newShortcut[name]}`;
+  detector.shortcut = function (handles) {
+    for (let name in handles) {
+      if (typeof handles[name] !== 'function') {
+        const message = `[detect-env shortcut()]: each shortcut.xxx should be an Function, but get ${typeof handles[name]}`;
         throw new TypeError(message);
       }
     }
 
-    const oldShortcut = shortcut;
-
-    clearShortcut(detector, oldShortcut);
-    shortcut = newShortcut;
-    bindShortcut(detector, newShortcut, detector.value);
-
+    shortcutHandles = handles;
+    detector.is = createShortcut(handles, detector.value);
     return detector;
   }
 
@@ -61,10 +56,11 @@ export default () => {
 
     originalEnv = variable;
     detector.value = normalize(variable, alias);
-    updateShortcut(detector, shortcut, detector.value);
+    detector.is = createShortcut(shortcutHandles, detector.value);
 
     return detector;
   }
+
 
   return detector;
 }

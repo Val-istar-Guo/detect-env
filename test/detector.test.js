@@ -116,20 +116,20 @@ describe('Default env detector:', function () {
       env.envVariable('prod');
     });
 
-    it ('isProd should be true', function () {
-      expect(env.isProd).to.be.true;
+    it ('.is.Prod should be true', function () {
+      expect(env.is.Prod).to.be.true;
     })
-    it ('isDev should be true', function () {
-      expect(env.isDev).to.be.false;
+    it ('.is.Dev should be true', function () {
+      expect(env.is.Dev).to.be.false;
     })
-    it ('isStage should be true', function () {
-      expect(env.isStage).to.be.false;
+    it ('.is.Stage should be true', function () {
+      expect(env.is.Stage).to.be.false;
     })
-    it ('isTest should be true', function () {
-      expect(env.isTest).to.be.false;
+    it ('.is.Test should be true', function () {
+      expect(env.is.Test).to.be.false;
     })
-    it ('isLocal should be true', function () {
-      expect(env.isLocal).to.be.false;
+    it ('.is.Local should be true', function () {
+      expect(env.is.Local).to.be.false;
     })
   });
 
