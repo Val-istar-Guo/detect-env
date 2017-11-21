@@ -117,20 +117,19 @@ describe('Default env detector:', function () {
     });
 
     it ('.is.Prod should be true', function () {
-      expect(env.is.Prod).to.be.true;
+      expect(env.is.prod).to.be.true;
     })
     it ('.is.Dev should be true', function () {
-      expect(env.is.Dev).to.be.false;
+      expect(env.is.dev).to.be.false;
     })
     it ('.is.Stage should be true', function () {
-      expect(env.is.Stage).to.be.false;
+      expect(env.is.stage).to.be.false;
     })
     it ('.is.Test should be true', function () {
-      expect(env.is.Test).to.be.false;
+      expect(env.is.test).to.be.false;
     })
     it ('.is.Local should be true', function () {
-      expect(env.is.Local).to.be.false;
+      expect(env.is.local).to.be.false;
     })
   });
-
 });
