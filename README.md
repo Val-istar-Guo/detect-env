@@ -9,10 +9,6 @@
 npm install detect-env
 ```
 
-```
-yarn add detect-env
-```
-
 ## Usage
 
 ### Use default config
@@ -43,11 +39,11 @@ const NEXT_PAGE_URL = env.detect({
 
 
 // Suppose process.env.NODE_ENV = 'prod'
-console.log(env.isProd); // true
-console.log(env.isDev); // false
-console.log(env.isTest); // false
-console.log(env.isStage); // false
-console.log(env.isLocal); // false
+console.log(env.is.prod); // true
+console.log(env.is.dev); // false
+console.log(env.is.test); // false
+console.log(env.is.stage); // false
+console.log(env.is.local); // false
 
 
 // You no longer need to write these obscure code
@@ -101,11 +97,11 @@ export default create()
     // The return value of the function will be used to set env.isProd
     // if process.env.NODE_ENV = 'production'
     // envName = 'prod' because alias setting
-    'Prod': (envName) => envName === 'prod',
-    'Stage': (envName) => envName === 'stage',
-    'Dev': (envName) => envName === 'dev',
-    'Test': (envName) => envName === 'test',
-    'Local': (envName) => envName === 'loacal',
+    prod: (envName) => envName === 'prod',
+    stage: (envName) => envName === 'stage',
+    dev: (envName) => envName === 'dev',
+    test: (envName) => envName === 'test',
+    local: (envName) => envName === 'loacal',
   })
   .envVariable(() => process.env.NODE_ENV)
   // also accept string
@@ -124,4 +120,3 @@ const NEXT_PAGE_URL = env.detect({
   default: 'dev.example.com',
 });
 ```
-

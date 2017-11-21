@@ -9,10 +9,10 @@ export default create()
     local: (envName) => envName === undefined || envName === null || /(local)|(^$)/.test(envName),
   })
   .shortcut({
-    Prod: (envName) => envName === 'prod',
-    Stage: (envName) => envName === 'stage',
-    Dev: (envName) => envName === 'dev',
-    Test: (envName) => envName === 'test',
-    Local: (envName) => envName === 'loacal',
+    prod: (envName) => envName === 'prod',
+    stage: (envName) => envName === 'stage',
+    dev: (envName) => envName === 'dev',
+    test: (envName) => envName === 'test',
+    local: (envName) => envName === 'loacal',
   })
   .envVariable(process ? process.env.NODE_ENV : '');

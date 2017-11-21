@@ -48,8 +48,8 @@ describe('env creator', function () {
       })
       .envVariable('idiot');
 
-    expect(env.isFool).to.be.true;
-    expect(env.isIdiot).to.be.true;
-    expect(env.isGenius).to.be.false;
+    expect(env.is.Fool).to.be.true;
+    expect(env.is.Idiot).to.be.true;
+    expect(env.is.Genius).to.be.false;
   });
 });
